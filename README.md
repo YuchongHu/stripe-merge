@@ -20,7 +20,7 @@ Users can use `apt` to install the required libraries.
 $  sudo apt install g++ make cmake nasm autoconf libtool git
 ```
 
-`StripeMerge`  is built on ISA-L and Sockpp. Users can install these two library manually:
+`StripeMerge`  is built on ISA-L and Sockpp. Users can install these two libraries manually:
 
 - **Intel®-storage-acceleration-library (ISA-L)**.
 
@@ -46,7 +46,7 @@ $  sudo apt install g++ make cmake nasm autoconf libtool git
 
 ## Installation
 
-- Users can install  `StripeMerge ` via make.
+- Users can install  `StripeMerge` via make.
 
   ```bash
   $  cd stripe-merge
@@ -99,7 +99,7 @@ $  sudo apt install g++ make cmake nasm autoconf libtool git
   $  python3 util/cloud_exp.py exp  stripes_size  k  m  nodes_num  [0-p, 1-g, 2-ncs]
   ```
 
-- You can also run the **matching simulator** with the parameter you want, to compare `StripeMerge-P` with`StripeMerge-G` .
+- You can also run the **matching simulator** locally with the parameter you want, to compare `StripeMerge-P` with`StripeMerge-G` .
 
   ```bash
   $  ./build/bin/matching_main [stripes_num] [host_num] [rs_k] [rs_m]
