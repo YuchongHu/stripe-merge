@@ -145,7 +145,7 @@ void TCPNode::start() {
       auto &task = scheme[i];
       task.index = i;
       if (task.coefficient) {
-        strcpy(task.target_fn, "test/test_file");
+        strcpy(task.target_fn, "test/stdfile");
       }
       sprintf(task.store_fn, "test/store/%u_%u/f_%u", task.target, task.source,
               i++);

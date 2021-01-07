@@ -4,6 +4,7 @@ import sys
 
 user_name = "yao"
 dir_base = "~/stripe-merge"
+exp_loop = 10
 
 results = []
 
@@ -63,33 +64,32 @@ def call_master(size, exp_type):
         "./build/bin/node_main 0 {} {}".format(size, exp_type), shell=True)
 
 
-def generate_config(k, m):
-    n = 2 * k + m
+def generate_config(k, m, nodes_num):
     lines = []
     with open("config/nodes_ip.txt", "r") as f:
         lines = f.readlines()
     if lines:
         with open("config/nodes_config.ini", "w") as wf:
             wf.write("{} {}\n".format(k, m))
-            for i in range(n):
+            for i in range(nodes_num):
                 wf.write(lines[i].strip() + " 15000\n")
     print("generate_config ok")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 4 and sys.argv[1] == "get_config":
-        generate_config(int(sys.argv[2]), int(sys.argv[3]))
+    if len(sys.argv) == 5 and sys.argv[1] == "get_config":
+        generate_config(int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
     elif len(sys.argv) == 4 and sys.argv[1] == "update":
         update(int(sys.argv[3]), sys.argv[2])
-    elif len(sys.argv) == 6 or len(sys.argv) == 7:
-        n = 2*int(sys.argv[3]) + int(sys.argv[4])
-        for i in range(10):
+    elif len(sys.argv) == 7:
+        nodes_num = int(sys.argv[5])
+        for i in range(exp_loop):
             results.clear()
             print("---- i = %d ----" % i)
             master_t = threading.Thread(
-                target=call_master, args=(sys.argv[2], sys.argv[5]))
+                target=call_master, args=(sys.argv[2], sys.argv[6]))
             master_t.start()
-            nodes_t = threading.Thread(target=call_nodes, args=(n,))
+            nodes_t = threading.Thread(target=call_nodes, args=(nodes_num,))
             nodes_t.start()
             master_t.join()
             nodes_t.join()
@@ -97,6 +97,6 @@ if __name__ == "__main__":
             print("%f\n" % results[0])
 
     else:
-        print("Usage: exp  exp_size  k  m  [0-p, 1-g, 2-ncs]")
-        print("   Or: update  [all/config/program]  n")
-        print("   Or: get_config  k  m")
+        print("Usage: exp  stripes_size  k  m  nodes_num  [0-p, 1-g, 2-ncs]")
+        print("   Or: update  [all/config/program]  nodes_num")
+        print("   Or: get_config  k  m  nodes_num")

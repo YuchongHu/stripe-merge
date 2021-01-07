@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
          << endl;
   }
 
-  FILE *f = fopen("test/test_file", "r");
+  FILE *f = fopen("test/stdfile", "r");
   if (!f) {
     cerr << "fopen failed\n";
     exit(-1);

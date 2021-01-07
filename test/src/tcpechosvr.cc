@@ -73,7 +73,7 @@ void write_worker() {
   char filename[64];
   int count = 0;
   while (1) {
-    sprintf(filename, "test/server_test_file_%d", count);
+    sprintf(filename, "test/stdfile%d", count);
     printf("%s\n", filename);
     unique_lock<mutex> task_lck(task_mtx);
     task_cv.wait(task_lck, [] { return task_signal; });

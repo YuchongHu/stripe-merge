@@ -76,7 +76,7 @@ void TCPClient::run() {
       exit(-1);
     }
     if (node_index) {
-      FILE *f = fopen("test/test_file", "r");
+      FILE *f = fopen("test/stdfile", "r");
       if (!f) {
         std::cerr << "fopen failed in TCPClient\n";
         exit(-1);
@@ -113,7 +113,7 @@ void TCPClient::demo_tasks() {
     MigrationInfo task(0, 1, i & 1);
     task.index = i;
     if (i & 1) {
-      strcpy(task.target_fn, "test/test_file");
+      strcpy(task.target_fn, "test/stdfile");
     }
     add_task(std::move(task));
   }
