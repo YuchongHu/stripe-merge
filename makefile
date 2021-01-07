@@ -17,8 +17,7 @@ TEST_BIN_DIR := $(TEST_DIR)/bin
 # OBJ := $(patsubst $(SRC_DIR)%,$(OBJ_DIR)%,$(SRC:.cc=.o))
 
 #  start of the programe
-TARGET := matching_main
-all : $(TARGET)
+all : matching_main node_main
 
 #  compile utility $ compile options
 CXX := g++
@@ -42,8 +41,8 @@ $(EXP_OBJ_DIR)/%.o : $(EXP_SRC_DIR)/%.cc
 $(TEST_OBJ_DIR)/%.o : $(TEST_SRC_DIR)/%.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-#  get main
-$(TARGET): $(OBJ_DIR)/$(TARGET).o $(OBJ_DIR)/stripe.o $(OBJ_DIR)/matching_generator.o
+#  get matching_main
+matching_main : $(OBJ_DIR)/matching_main.o $(OBJ_DIR)/stripe.o $(OBJ_DIR)/matching_generator.o
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $^ -o $(BIN_DIR)/$@
 
