@@ -55,17 +55,15 @@ $  sudo apt install g++ make cmake nasm autoconf libtool git
 
 ## Configuration
 
-- Before running, users should prepare the `nodes_ip.text`, in which are IPs of all `helper_nodes`. 
+- Before running, users should prepare the configure. The example configure are presented in `config/nodes_config.ini`, where the first line is RS code parameters `k` and  `m`, followed by  the IPs and ports of helper_nodes in need.
 
-- Next, prepare the configure. The example configure are presented in `nodes_config.ini`, where the first line is RS code parameter `k` and  `m`, followed by  the IPs of helper_nodes in need.
-
-- You can also generate the `nodes_config.ini` using script `util/cloud_exp.py`, by passing RS code parameter `k`, `m` as well as the number of `helper_nodes` that actually runs. 
+- Or you can also generate the `config/nodes_config.ini` using script `util/cloud_exp.py`, by passing RS code parameter `k`, `m` as well as the number of `helper_nodes` that actually runs.  Port in default is 15000. Note that  before generating, `config/nodes_ip.txt` should be filled with IPs of all `helper_nodes` . 
 
   ```bash
   $  python3 util/cloud_exp.py get_config  k  m  nodes_num
   ```
 
-- Users can use  script `util/cloud_exp.py` to update the configure or program in `helper_nodes` either.  (To utilize this tool, user should configure that the `master_node` connect to all `helper_nodes` by SSH without password. Note that the script is based on the assumption that the `helper_nodes` are mapped orderly like node01/node02/.../node32 in `/etc/hosts`.)
+- Users can use  script `util/cloud_exp.py` to update the configure or program in `helper_nodes` either.  (To utilize this tool, user should configure that the `master_node` connect to all `helper_nodes` by SSH without password. Note that the script is based on the assumption that the `helper_nodes` are mapped orderly like node01/node02/.../node32 in `/etc/hosts`. Users should also provide `user_name` and `dir_base` at the beginning of the script.)
 
   ```bash
   $  python3 util/cloud_exp.py update [all/config/program] nodes_num
