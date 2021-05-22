@@ -1,7 +1,7 @@
 StripeMerge
 =====
 
-Here is the source code of `StripeMerge` prototype system described in our paper submitted to ICDCS'21. 
+This repository includes source code of `StripeMerge` prototype system described in our paper accepted by ICDCS'21. 
 
 Preparation
 ----
@@ -103,4 +103,23 @@ $  sudo apt install g++ make cmake nasm autoconf libtool git
   $  ./build/bin/matching_main [stripes_num] [host_num] [rs_k] [rs_m]
   ```
 
-  
+## Publication
+
+Qiaori Yao, Yuchong Hu, Liangfeng Cheng, Patrick P. C. Lee, Dan Feng, Weichun Wang, Wei Chen.
+**"StripeMerge: Efficient Wide-Stripe Generation for Large-Scale Erasure-Coded Storage."**
+Proceedings of the 41st IEEE International Conference on Distributed Computing Systems (ICDCS 2021), July 2021.
+(AR: 97/498 = 19.8%)
+
+## Contact
+
+Please email to Yuchong Hu ([yuchonghu@hust.edu.cn](mailto:yuchonghu@hust.edu.cn)) if you have any questions.
+
+## Our other works
+
+Welcome to follow our other works!
+
+1. FAST 2021: https://github.com/YuchongHu/ecwide
+2. ICDCS 2021: https://github.com/YuchongHu/stripe-merge
+3. SoCC 2019: https://github.com/YuchongHu/echash
+4. INFOCOM 2018: https://github.com/YuchongHu/ncscale
+5. TOS: https://github.com/YuchongHu/doubler
