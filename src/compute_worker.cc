@@ -63,11 +63,11 @@ void ComputeWorker::run() {
 }
 
 void ComputeWorker::init_ec_table() {
-  uint8_t *encode_matrix = new uint8_t[6]{1, 0, 0, 1, 1, 1};
+  uint8_t *encode_matrix = new uint8_t[2]{1, 1};
   uint8_t i;
   for (i = 0; i < rs_m; ++i) {
     encode_gftbl[i] = new uint8_t[64]();
-    encode_matrix[5] = get_gf_pow(i + 1, rs_k);
+    encode_matrix[1] = get_gf_pow(i + 1, rs_k);
     ec_init_tables(2, 1, encode_matrix, encode_gftbl[i]);
   }
   delete[] encode_matrix;
