@@ -1,5 +1,10 @@
 #include "ncscale_simulation.hh"
 
+/**
+ * Here's just a rough implementation of generating NCScale's tasks for our
+ * experiment system. Just some dirty works. Can be skipped.
+ */
+
 NCScaleSimulation::NCScaleSimulation(uint k, uint m)
     : rs_k(k), rs_m(m), rs_n(k + m) {
   batch_size = 2 * k * (k + m) * (2 * k + m);

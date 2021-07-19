@@ -14,6 +14,7 @@ TCPNode::TCPNode(uint16_t i, uint _exp_size, uint _scheme_type)
   node_num = parse_config(fn);
 }
 
+// parse specific config file
 uint16_t TCPNode::parse_config(const std::string &fn) {
   std::fstream config(fn.c_str(), std::ios_base::in);
   if (!config.is_open()) {
@@ -51,7 +52,10 @@ uint16_t TCPNode::parse_config(const std::string &fn) {
   return num - 1;
 }
 
+// method to start to work
 void TCPNode::start() {
+  // index!=0  =>  data-node
+  // index==0  =>  master-node
   if (self_index) {
     // init dirs
     char dir_base[64], command[128];
@@ -70,6 +74,7 @@ void TCPNode::start() {
     std::thread cli_thr([&] { client->start_client(); });
     wait_svr_thr.join();
     std::thread svr_thr([&] { server->start_serving(); });
+
     // get task from master
     while (true) {
       // the tasks in server's queue come from master
@@ -152,7 +157,8 @@ void TCPNode::start() {
     }
     std::cout << "exp_transfer_size size: " << exp_transfer_size << "\n";
 
-    // add the tasks from above scheme
+    // add the tasks from above scheme, and then client's worker-threads will
+    // send them separately
     for (i = 0; i < exp_transfer_size; ++i) {
       auto &task = scheme[i];
       if (task.source == task.target) {

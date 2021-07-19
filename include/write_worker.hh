@@ -6,6 +6,7 @@
 #include "migration_info.hh"
 #include "thread_pool.hh"
 
+// extend from ThreadPool; worker-threads are for writing data to a file
 class WriteWorker : public ThreadPool<MigrationInfo> {
  private:
   MemoryPool* mem_pool;

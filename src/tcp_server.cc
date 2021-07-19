@@ -6,6 +6,7 @@ TCPServer::TCPServer() : TCPServer(15000, 1, 2, 1, 1) {}
 
 TCPServer::~TCPServer() { acc.close(); }
 
+// create with specific parameters and a thread pool
 TCPServer::TCPServer(in_port_t _port, uint n, uint8_t k, uint8_t m,
                      uint workers_num)
     : ThreadPool<MigrationInfo>(1),
@@ -31,13 +32,16 @@ TCPServer::TCPServer(in_port_t _port, uint n, uint8_t k, uint8_t m,
   // std::cout << "Awaiting connections on port " << port << "..." << std::endl;
 }
 
+// deal with tasks of receiving data from other data-nodes
 void TCPServer::receive_handler(sockpp::tcp_socket sock) {
+  // waiting for all connections to be OK
   std::unique_lock<std::mutex> lck(serving_mtx);
   while (!serving_flag) {
     serving_cv.wait(lck, [&] { return serving_flag; });
   }
   lck.unlock();
 
+  // tell the opposite data-node to start
   char start_flag = 1;
   if (sock.write_n(&start_flag, 1) == -1) {
     std::cerr << "send start flag error" << std::endl;
@@ -53,6 +57,7 @@ void TCPServer::receive_handler(sockpp::tcp_socket sock) {
       break;
     }
 
+    // an empty task means it's time to shutdown
     if (task.source == task.target) {
       break;
     }
@@ -76,12 +81,16 @@ void TCPServer::receive_handler(sockpp::tcp_socket sock) {
   sock.close();
 }
 
+// for data-nodes, receive tasks from master-node
 void TCPServer::run() {
+  // waiting for all connections to be OK
   std::unique_lock<std::mutex> lck(serving_mtx);
   while (!serving_flag) {
     serving_cv.wait(lck, [&] { return serving_flag; });
   }
   lck.unlock();
+
+  // tell the master-node to start
   char start_flag = 1;
   if (master_sock.write_n(&start_flag, 1) == -1) {
     std::cerr << "send start flag error" << std::endl;
@@ -100,8 +109,8 @@ void TCPServer::run() {
   master_sock.close();
 }
 
+// waiting for all nodes to be connected
 void TCPServer::wait_for_connection() {
-  // wait for all nodes to be connected
   uint16_t i = 0;
   uint16_t client_index;
   while (i < serving_num) {
@@ -124,6 +133,7 @@ void TCPServer::wait_for_connection() {
   }
 }
 
+// prepare to serve and tell the serving threads to be ready
 void TCPServer::start_serving() {
   struct timeval start_time, end_time;
   gettimeofday(&start_time, nullptr);

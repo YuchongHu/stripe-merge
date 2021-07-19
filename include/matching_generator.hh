@@ -14,18 +14,40 @@
 #define UINT32_MASK 0xFFFFFFFF
 
 class MatchingGenerator {
-  uint16_t node_num;
+  uint16_t node_num;  // N
   uint8_t rs_k;
   uint8_t rs_m;
-  uint8_t rs_n;
+  uint8_t rs_n;  // equals to k+m
   uint stripes_num;
   std::vector<Stripe> stripes;
-  std::vector<uint8_t> cost_table;
+  std::vector<uint8_t> cost_table;  // use array to store a Symmetric Matrix
   std::list<uint> remaining_stripes;
+
+  /**     - Explanation for the hash-table relevant -
+   * We use the hash table to imediately get the set of stripes that complies
+   * the given distribution of parity chunks.
+   *
+   * Here we assume that a distribution of parity chunks can be expressed as a
+   * list of number:
+   * -    [No.1, ..., No. m] | [vector]    -
+   *
+   * In the front are the nodes that stores the parity chunks, and in the end we
+   * have the vector describing the set of parity positions (in u16's bits).
+   *
+   * To exploit a hash table, the key is required to be a hashable type. For
+   * unordered_map, types in std::string are the only supported ones to present
+   * a number's list with an unfixed length. Note that the default string is
+   * designed for ASCII, and so it only supports 8-bit values. As an
+   * alternative, we can use a u16string as a container to present such a list
+   * of number, enabling both the adequate range of values and the convenience
+   * of using hash.
+   */
   std::unordered_map<std::u16string, std::list<uint>> parity_map;
   std::unordered_map<std::u16string, std::list<uint>> partial_dist_map;
   std::unordered_map<std::u16string, std::list<uint>> zero_map;
-  std::vector<uint> none_zero_candidate;
+  std::vector<uint> non_zero_candidate;
+
+  // for transfer experiment
   std::vector<MigrationInfo> blocks_to_sent;
 
  public:

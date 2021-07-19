@@ -9,6 +9,7 @@
 #include "migration_info.hh"
 #include "write_worker.hh"
 
+// extend from ThreadPool; worker-threads are for ec computation
 class ComputeWorker : public ThreadPool<MigrationInfo> {
  private:
   WriteWorker* ww;

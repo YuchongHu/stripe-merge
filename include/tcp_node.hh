@@ -9,6 +9,20 @@
 #include "tcp_client.hh"
 #include "tcp_server.hh"
 
+/**
+ * A TCPNode is consited of two components: TCPClient and TCPServer, where
+ * TCPClient is used to connect to other nodes and send data to other nodes,
+ * while serving connections and receiving data from other nodes are
+ * accomplished in TCPServer.
+ *
+ * There is one instance of TCPNode running in every node, and we can assign its
+ * role by passing specific parameters in the program's starting command.
+ *
+ * In master-node, TCPNode generates the merging scheme, and send the control
+ * commands to corresponding data-nodes. In data-node, TCPNode listens for
+ * control commands from the master-node, actions to execute the commands (send
+ * data to others or receive data from others).
+ */
 class TCPNode {
  private:
   TCPClient *client;

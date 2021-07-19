@@ -15,24 +15,29 @@ ComputeWorker::ComputeWorker(uint t, WriteWorker *p, uint8_t k, uint8_t m)
   init_ec_table();
 }
 
+// brute computation of the pow of specific value in galois field
 uint8_t ComputeWorker::get_gf_pow(uint8_t a, uint8_t k) {
   if (a == 1) {
     return 1;
   }
   uint8_t result = a;
   for (uint8_t i = 1; i < k; ++i) {
+    // multiplication in galois field
     result = gf_mul(result, a);
   }
   return result;
 }
 
+// override with ComputeWorker's method to deal with tasks
 void ComputeWorker::run() {
   // allocate memory for computing
   uint8_t **data = new uint8_t *[2]();
   data[1] = new uint8_t[CHUNK_SIZE]();
   while (true) {
+    // get a task from the task queue
     MigrationInfo task = std::move(get_task());
     if (!task.mem_ptr) {
+      // it means shutdown
       ww->set_finished();
       break;
     }
@@ -55,6 +60,8 @@ void ComputeWorker::run() {
     data[0] = (uint8_t *)task.mem_ptr;
     ec_encode_data(CHUNK_SIZE, 2, 1, encode_gftbl[task.coefficient - 1], data,
                    data);
+
+    // pass the task to the write worker
     ww->add_task(std::move(task));
   }
 
@@ -62,9 +69,11 @@ void ComputeWorker::run() {
   delete[] data;
 }
 
+// init ec table for later ec computations
 void ComputeWorker::init_ec_table() {
   uint8_t *encode_matrix = new uint8_t[2]{1, 1};
   uint8_t i;
+  // init and store gftbls of different coefficients for efficiency
   for (i = 0; i < rs_m; ++i) {
     encode_gftbl[i] = new uint8_t[64]();
     encode_matrix[1] = get_gf_pow(i + 1, rs_k);

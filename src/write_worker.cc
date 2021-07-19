@@ -12,8 +12,10 @@ WriteWorker::WriteWorker(uint t, MemoryPool* p)
   }
 }
 
+// override with WriteWorker's method to deal with tasks
 void WriteWorker::run() {
   while (true) {
+    // get a task from the task queue
     MigrationInfo task = std::move(get_task());
     if (!task.mem_ptr) {
       break;
@@ -33,6 +35,7 @@ void WriteWorker::run() {
     }
     fclose(f);
 
+    // release the block at last
     mem_pool->release_block(task.mem_ptr);
   }
 }

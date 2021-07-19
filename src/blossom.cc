@@ -1,3 +1,14 @@
+/**                 Notice
+ * This file implements a demo for solving the Maximum Weighted Matching Problem
+ * in General Graphs. However this demo was not included or called in the
+ * final-version system.
+ *
+ * Following contents may be obsolete, obscure and very hard to understand.
+ * If you really want to get more details about this demo, please learn about
+ * the Maximum Weighted Matching Problem in General Graphs, as well as the
+ * blossom algorithm.
+ */
+
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>

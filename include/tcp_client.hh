@@ -18,6 +18,7 @@
 #include "sockpp/tcp_connector.h"
 #include "thread_pool.hh"
 
+// socket_address wrapper
 typedef struct _s_a {
   std::string ip;
   in_port_t port;
@@ -25,6 +26,7 @@ typedef struct _s_a {
   _s_a() = default;
 } socket_address;
 
+// extend from ThreadPool; worker-threads are for sending data
 class TCPClient : public ThreadPool<MigrationInfo> {
  private:
   uint16_t node_index;

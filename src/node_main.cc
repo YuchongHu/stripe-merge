@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
 
+  // run as specific role, according to the parameter inputed
   if (argv[1][0] != '0') {
     TCPNode node(strtoul(argv[1], nullptr, 10));
     node.start();
@@ -23,7 +24,6 @@ int main(int argc, char *argv[]) {
     TCPNode node(strtoul(argv[1], nullptr, 10), strtoul(argv[2], nullptr, 10),
                  exp_type);
     node.start();
-
-    return 0;
   }
+  return 0;
 }

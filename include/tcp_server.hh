@@ -17,6 +17,7 @@
 #include "thread_pool.hh"
 #include "write_worker.hh"
 
+// extend from ThreadPool; worker-threads are for receiving data
 class TCPServer : public ThreadPool<MigrationInfo> {
  private:
   uint8_t rs_k;

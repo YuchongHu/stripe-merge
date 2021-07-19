@@ -12,11 +12,13 @@ int main(int argc, char **argv) {
          << endl;
     exit(-1);
   }
+  // get parameters
   uint stripes_num = strtoul(argv[1], nullptr, 10);
   uint16_t node_num = strtoul(argv[2], nullptr, 10);
   uint8_t rs_k = strtoul(argv[3], nullptr, 10);
   uint8_t rs_m = strtoul(argv[4], nullptr, 10);
 
+  // prepare for hash table
   char16_t **raw_dist = new char16_t *[stripes_num];
   char16_t **parity_dist = new char16_t *[stripes_num];
   for (uint i = 0; i < stripes_num; ++i) {
@@ -24,6 +26,7 @@ int main(int argc, char **argv) {
     parity_dist[i] = new char16_t[rs_m];
   }
 
+  // get distributions
   Stripe::generate_random_distributions(raw_dist, parity_dist, node_num,
                                         stripes_num, rs_k, rs_m);
 
@@ -32,6 +35,7 @@ int main(int argc, char **argv) {
   uint tot_costs[4] = {0};
   double fin_time[4] = {0.0};
 
+  // call StripeMerge-P
   cout << "=========== dist_based_search -> StripeMerge-P  ===========\n";
   gettimeofday(&start_time, nullptr);
   MatchingGenerator *mg1 =
@@ -48,18 +52,7 @@ int main(int argc, char **argv) {
   // std::cout << "get_sending_scheme size: " << scheme.size() << "\n";
   delete mg1;
 
-  // cout << "=========== random_match ===========\n";
-  // gettimeofday(&start_time, nullptr);
-  // MatchingGenerator *mg4 =
-  //     new MatchingGenerator(node_num, rs_k, rs_m, stripes_num);
-  // mg4->input_stripes(raw_dist, parity_dist);
-  // mg4->random_match();
-  // gettimeofday(&end_time, nullptr);
-  // mg4->print_statics();
-  // fin_time[3] = (end_time.tv_sec - start_time.tv_sec) * 1000 +
-  //               (end_time.tv_usec - start_time.tv_usec) / 1000;
-  // cout << "finish time: " << fin_time[3] << "ms\n";
-
+  // call StripeMerge-G
   if (COMPARE) {
     cout << "\n=========== basic_greedy -> StripeMerge-G ===========\n";
     gettimeofday(&start_time, nullptr);
